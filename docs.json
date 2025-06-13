@@ -1,35 +1,15 @@
 {
-  "$schema": "https://mintlify.com/docs.json",
+  "$schema": "https://super.work/docs.json",
   "theme": "mint",
-  "name": "Mint Starter Kit",
+  "name": "Super API guide",
   "colors": {
     "primary": "#16A34A",
     "light": "#07C983",
     "dark": "#15803D"
   },
-  "favicon": "/favicon.svg",
+  "favicon": "https://storage.googleapis.com/slite-cdn/super-assets/favicon-32x32.png",
   "navigation": {
     "tabs": [
-      {
-        "tab": "Guides",
-        "groups": [
-          {
-            "group": "Get Started",
-            "pages": ["index", "quickstart", "development"]
-          },
-          {
-            "group": "Essentials",
-            "pages": [
-              "essentials/markdown",
-              "essentials/code",
-              "essentials/images",
-              "essentials/settings",
-              "essentials/navigation",
-              "essentials/reusable-snippets"
-            ]
-          }
-        ]
-      },
       {
         "tab": "API Reference",
         "openapi": "https://api.super.work/openapi.json"
@@ -38,45 +18,39 @@
     "global": {
       "anchors": [
         {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
+          "anchor": "Super guide",
+          "href": "https://slite.slite.page/p/esIDsAWvymOa16/Your-Super-guide",
           "icon": "book-open-cover"
         },
         {
           "anchor": "Community",
-          "href": "https://mintlify.com/community",
+          "href": "https://join.slack.com/t/slitebetacommunity/shared_invite/zt-2f38u5l4w-iYR2H_u4uiw4G982VjLxEA",
           "icon": "slack"
-        },
-        {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
         }
       ]
     }
   },
   "logo": {
-    "light": "/logo/light.svg",
-    "dark": "/logo/dark.svg"
+    "light": "https://storage.googleapis.com/slite-cdn/assets/2025/Slite_Wordmark_Dark_White.png",
+    "dark": "https://storage.googleapis.com/slite-cdn/assets/2025/Slite_Wordmark_Dark_Large.png"
   },
   "navbar": {
     "links": [
       {
         "label": "Support",
-        "href": "mailto:hi@mintlify.com"
+        "href": "mailto:support@super.work"
       }
     ],
     "primary": {
       "type": "button",
-      "label": "Dashboard",
-      "href": "https://dashboard.mintlify.com"
+      "label": "Head to Super",
+      "href": "https://super.work"
     }
   },
   "footer": {
     "socials": {
-      "x": "https://x.com/mintlify",
-      "github": "https://github.com/mintlify",
-      "linkedin": "https://linkedin.com/company/mintlify"
+      "x": "https://x.com/superdotwork",
+      "linkedin": "https://www.linkedin.com/company/superatwork/"
     }
   }
 }
