@@ -3,9 +3,9 @@
   "theme": "mint",
   "name": "Super API guide",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
+    "primary": "#ef91f7",
+    "light": "#ffd2e1",
+    "dark": "#cc67f4"
   },
   "favicon": "https://storage.googleapis.com/slite-cdn/super-assets/favicon-32x32.png",
   "navigation": {
@@ -31,8 +31,8 @@
     }
   },
   "logo": {
-    "light": "https://storage.googleapis.com/slite-cdn/assets/2025/Slite_Wordmark_Dark_White.png",
-    "dark": "https://storage.googleapis.com/slite-cdn/assets/2025/Slite_Wordmark_Dark_Large.png"
+    "light": "https://storage.googleapis.com/slite-cdn/assets/2025/Super_Wordmark_White_Large.png",
+    "dark": "https://storage.googleapis.com/slite-cdn/assets/2025/Super_Wordmark_Dark_Large.png"
   },
   "navbar": {
     "links": [
