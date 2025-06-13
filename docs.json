@@ -3,11 +3,30 @@
   "theme": "mint",
   "name": "Super API guide",
   "colors": {
-    "primary": "#ef91f7",
-    "light": "#ffd2e1",
-    "dark": "#cc67f4"
+    "primary": "#cc67f4",
+    "light": "#ef91f7",
+    "dark": "#ffd2e1"
   },
-  "favicon": "https://storage.googleapis.com/slite-cdn/super-assets/favicon-32x32.png",
+  "description": "Super API guide",
+  "logo": {
+    "light": "https://storage.googleapis.com/slite-cdn/assets/2025/Super_Wordmark_Dark_Large.png",
+    "dark": "https://storage.googleapis.com/slite-cdn/assets/2025/Super_Wordmark_White_Large.png"
+  },
+  "favicon": {
+    "light": "https://storage.googleapis.com/slite-cdn/super-assets/favicon.ico",
+    "dark": "https://storage.googleapis.com/slite-cdn/super-assets/favicon.ico"
+  },
+  "fonts": {
+    "family": "UniversalSans",
+    "source": "https://assets.slite.com/fonts/UniversalSans-500.woff2",
+    "format": "woff2",
+    "heading": {
+      "family": "PolySans",
+      "source": "https://assets.slite.com/fonts/PolySans-Neutral.woff2",
+      "format": "woff2"
+    }
+  },
+  "appearance": { "default": "dark" },
   "navigation": {
     "tabs": [
       {
@@ -30,10 +49,7 @@
       ]
     }
   },
-  "logo": {
-    "light": "https://storage.googleapis.com/slite-cdn/assets/2025/Super_Wordmark_White_Large.png",
-    "dark": "https://storage.googleapis.com/slite-cdn/assets/2025/Super_Wordmark_Dark_Large.png"
-  },
+
   "navbar": {
     "links": [
       {
@@ -43,7 +59,7 @@
     ],
     "primary": {
       "type": "button",
-      "label": "Head to Super",
+      "label": "Open Super",
       "href": "https://super.work"
     }
   },
