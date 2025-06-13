@@ -17,9 +17,11 @@
     "dark": "https://storage.googleapis.com/slite-cdn/super-assets/favicon.ico"
   },
   "fonts": {
-    "family": "UniversalSans",
-    "source": "https://assets.slite.com/fonts/UniversalSans-500.woff2",
-    "format": "woff2",
+    "body": {
+      "family": "UniversalSans",
+      "source": "https://assets.slite.com/fonts/UniversalSans-500.woff2",
+      "format": "woff2"
+    },
     "heading": {
       "family": "PolySans",
       "source": "https://assets.slite.com/fonts/PolySans-Neutral.woff2",
