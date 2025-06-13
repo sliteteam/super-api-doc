@@ -5,9 +5,9 @@
   "colors": {
     "primary": "#cc67f4",
     "light": "#ef91f7",
-    "dark": "#ffd2e1"
+    "dark": "#cc67f4"
   },
-  "description": "Super API guide",
+  "description": "Super API guide |  powerful AI workflows with Super's developer API. Connect data sources, create custom interfaces, and deploy AI assistants that leverage your company's knowledge.",
   "logo": {
     "light": "https://storage.googleapis.com/slite-cdn/assets/2025/Super_Wordmark_Dark_Large.png",
     "dark": "https://storage.googleapis.com/slite-cdn/assets/2025/Super_Wordmark_White_Large.png"
