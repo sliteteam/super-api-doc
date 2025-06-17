@@ -1,0 +1,748 @@
+{
+  "components": {
+    "examples": {},
+    "headers": {},
+    "parameters": {},
+    "requestBodies": {},
+    "responses": {},
+    "schemas": {
+      "Source": {
+        "properties": {
+          "explanation": {
+            "type": "string",
+            "description": "For super, gives explanation about the source"
+          },
+          "updatedAt": {
+            "anyOf": [
+              { "type": "string", "format": "date-time" },
+              { "type": "string" }
+            ],
+            "description": "Date of the last update of the note"
+          },
+          "url": { "type": "string", "description": "Url of the note" },
+          "title": { "type": "string", "description": "Title of the note" },
+          "id": { "type": "string", "description": "Id of the note" }
+        },
+        "required": ["updatedAt", "url", "title", "id"],
+        "type": "object"
+      },
+      "AnswerAndSources": {
+        "properties": {
+          "sources": {
+            "items": { "$ref": "#/components/schemas/Source" },
+            "type": "array",
+            "description": "Array of sources that were used to answer the question"
+          },
+          "answer": {
+            "type": "string",
+            "description": "Answer to the question"
+          }
+        },
+        "required": ["sources", "answer"],
+        "type": "object"
+      },
+      "PublicApiAuthError": {
+        "properties": {
+          "message": {
+            "type": "string",
+            "enum": ["Invalid apiKey"],
+            "nullable": false
+          },
+          "id": {
+            "type": "string",
+            "enum": ["auth/unauthorized"],
+            "nullable": false
+          }
+        },
+        "required": ["message", "id"],
+        "type": "object"
+      },
+      "PublicApiError": {
+        "properties": {
+          "message": { "type": "string" },
+          "id": { "type": "string" }
+        },
+        "required": ["message", "id"],
+        "type": "object"
+      },
+      "FieldErrors": {
+        "properties": {},
+        "type": "object",
+        "additionalProperties": {
+          "properties": { "value": {}, "message": { "type": "string" } },
+          "required": ["message"],
+          "type": "object"
+        }
+      },
+      "PublicApiFieldValidationError": {
+        "properties": {
+          "details": { "$ref": "#/components/schemas/FieldErrors" },
+          "message": {
+            "type": "string",
+            "enum": ["Validation Failed"],
+            "nullable": false
+          },
+          "id": {
+            "type": "string",
+            "enum": ["field-validation"],
+            "nullable": false
+          }
+        },
+        "required": ["message", "id"],
+        "type": "object"
+      },
+      "PublicApiRateLimitError": {
+        "properties": {
+          "message": {
+            "type": "string",
+            "enum": [
+              "You've reached the api rate limit. Please wait and retry later."
+            ],
+            "nullable": false
+          },
+          "id": { "type": "string", "enum": ["rate-limit"], "nullable": false }
+        },
+        "required": ["message", "id"],
+        "type": "object"
+      },
+      "AskQuotaExceededError": {
+        "properties": {
+          "name": { "type": "string" },
+          "message": { "type": "string" },
+          "stack": { "type": "string" },
+          "id": { "type": "string" },
+          "status": { "type": "number", "format": "double" },
+          "limit": { "type": "number", "format": "double", "nullable": true },
+          "resetDate": { "type": "string", "nullable": true }
+        },
+        "required": ["name", "message", "id", "status"],
+        "type": "object",
+        "additionalProperties": false
+      },
+      "AskRateLimitedError": {
+        "properties": {
+          "name": { "type": "string" },
+          "message": { "type": "string" },
+          "stack": { "type": "string" },
+          "id": { "type": "string" },
+          "status": { "type": "number", "format": "double" }
+        },
+        "required": ["name", "message", "id", "status"],
+        "type": "object",
+        "additionalProperties": false
+      },
+      "AskDisabledError": {
+        "properties": {
+          "name": { "type": "string" },
+          "message": { "type": "string" },
+          "stack": { "type": "string" },
+          "id": { "type": "string" },
+          "status": { "type": "number", "format": "double" }
+        },
+        "required": ["name", "message", "id", "status"],
+        "type": "object",
+        "additionalProperties": false
+      },
+      "DigestResult": {
+        "type": "string",
+        "description": "Digest result in markdown."
+      },
+      "PublicApiDisabledError": {
+        "properties": {
+          "message": {
+            "type": "string",
+            "enum": [
+              "This feature is disabled for your organization. Please contact support."
+            ],
+            "nullable": false
+          },
+          "id": {
+            "type": "string",
+            "enum": ["askx-disabled"],
+            "nullable": false
+          }
+        },
+        "required": ["message", "id"],
+        "type": "object"
+      },
+      "PublicApiNotFoundError": {
+        "properties": {
+          "message": {
+            "type": "string",
+            "enum": ["Data source not found."],
+            "nullable": false
+          },
+          "id": {
+            "type": "string",
+            "enum": ["root-id-not-found"],
+            "nullable": false
+          }
+        },
+        "required": ["message", "id"],
+        "type": "object"
+      },
+      "ObjectType": { "enum": ["markdown", "html"], "type": "string" },
+      "ListResult": {
+        "properties": {
+          "hits": {
+            "items": { "$ref": "#/components/schemas/Source" },
+            "type": "array"
+          },
+          "nbPages": {
+            "type": "number",
+            "format": "double",
+            "description": "Total number of pages for the current query"
+          },
+          "page": {
+            "type": "number",
+            "format": "double",
+            "description": "Current page number of the search pagination"
+          }
+        },
+        "required": ["hits", "nbPages", "page"],
+        "type": "object"
+      },
+      "ListPage": { "type": "integer", "format": "int32", "minimum": 0 },
+      "ListHitsPerPage": {
+        "type": "integer",
+        "format": "int32",
+        "minimum": 1,
+        "maximum": 100
+      }
+    },
+    "securitySchemes": {
+      "bearer": {
+        "type": "oauth2",
+        "flows": {
+          "authorizationCode": {
+            "authorizationUrl": "https://api.super.work/oauth/authorize",
+            "tokenUrl": "https://api.super.work/oauth/token",
+            "scopes": {}
+          }
+        }
+      }
+    }
+  },
+  "info": {
+    "title": "Public Super api",
+    "version": "1",
+    "description": "Run super queries, digests, index and manage custom sources.",
+    "license": { "name": "private" },
+    "contact": { "name": "Slite" }
+  },
+  "openapi": "3.0.0",
+  "paths": {
+    "/super": {
+      "post": {
+        "operationId": "super",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/AnswerAndSources" },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "answer": "The onboarding steps are...",
+                      "sources": [
+                        {
+                          "title": "Onboarding",
+                          "url": "https://slite.slite.page/p/S1TSuHnZf/Security-at-Slite",
+                          "id": "S1TSuHnZf",
+                          "updatedAt": "2021-01-01T00:00:00.000Z"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid authentication",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/PublicApiAuthError" }
+              }
+            }
+          },
+          "422": {
+            "description": "Ask feature is disabled",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/AskDisabledError" }
+              }
+            }
+          },
+          "429": {
+            "description": "Ask rate limit exceeded",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/AskRateLimitedError" }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/PublicApiError" }
+              }
+            }
+          }
+        },
+        "description": "Ask a question to your super assistant\nThe scope of the data used to answer the question is restricted to the authenticated user.\nVarious optional filters are available to restrict the scope of the data even more.",
+        "summary": "Ask a question",
+        "security": [{ "api_key": [], "bearer": [] }],
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "question": {
+                    "type": "string",
+                    "description": "Question to ask on super",
+                    "example": ["What are the onboarding steps?"]
+                  },
+                  "parentId": {
+                    "type": "string",
+                    "description": "Optional filter to only return data under this parent note id"
+                  },
+                  "assistantId": {
+                    "type": "string",
+                    "description": "Optional filter to use a specific assistant for super only"
+                  }
+                },
+                "required": ["question"],
+                "type": "object"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/super/digest/{assistantId}": {
+      "get": {
+        "operationId": "digest",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/DigestResult" },
+                "examples": {
+                  "Example 1": { "value": "The onboarding steps are..." }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid authentication",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/PublicApiAuthError" }
+              }
+            }
+          },
+          "422": {
+            "description": "Super feature is disabled",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/AskDisabledError" }
+              }
+            }
+          },
+          "429": {
+            "description": "Super rate limit exceeded",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/AskRateLimitedError" }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/PublicApiError" }
+              }
+            }
+          }
+        },
+        "description": "Trigger Super digest.\nThe audience of the fetched content used to answer is restricted to the authenticated user.",
+        "summary": "Trigger Super digest",
+        "security": [{ "api_key": [], "bearer": [] }],
+        "parameters": [
+          {
+            "description": "Assistant id to use",
+            "in": "path",
+            "name": "assistantId",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ]
+      }
+    },
+    "/super/index": {
+      "post": {
+        "operationId": "super-index",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Source" },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "title": "Onboarding",
+                      "url": "https://slite.slite.page/p/S1TSuHnZf/Security-at-Slite",
+                      "id": "S1TSuHnZf",
+                      "updatedAt": "2021-01-01T00:00:00.000Z"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid authentication",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/PublicApiAuthError" }
+              }
+            }
+          },
+          "402": {
+            "description": "This feature is disabled for your organization. Please contact support.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicApiDisabledError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Data source not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicApiNotFoundError"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Input validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicApiFieldValidationError"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limitation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicApiRateLimitError"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/PublicApiError" }
+              }
+            }
+          }
+        },
+        "description": "Index a custom content for Super usage.",
+        "summary": "Index a custom content",
+        "security": [{ "api_key": [], "bearer": [] }],
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "rootId": {
+                    "type": "string",
+                    "description": "Root id of the object to gather sources from. This should be created from the UI as a new custom data source.",
+                    "example": ["a2ZSuHnZf"]
+                  },
+                  "id": {
+                    "type": "string",
+                    "description": "Unique id of the object to index scoped to the rootId",
+                    "example": ["custom-id"]
+                  },
+                  "title": {
+                    "type": "string",
+                    "description": "Title of the object to index",
+                    "example": ["Note title"]
+                  },
+                  "content": {
+                    "type": "string",
+                    "description": "Content of the object to index",
+                    "example": ["# Content in markdown"]
+                  },
+                  "type": {
+                    "$ref": "#/components/schemas/ObjectType",
+                    "description": "Type of the object to index. Can be \"markdown\" or \"html\"",
+                    "example": ["markdown"]
+                  },
+                  "updatedAt": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Last update date of the object to index. Used to determine the freshness of the object.",
+                    "example": ["2021-01-01T00:00:00Z"]
+                  },
+                  "url": {
+                    "type": "string",
+                    "description": "Url of the object to index. Used to redirect to the proper page.",
+                    "example": [
+                      "https://slite.slite.page/p/S1TSuHnZf/Security-at-Slite"
+                    ]
+                  }
+                },
+                "required": [
+                  "rootId",
+                  "id",
+                  "title",
+                  "content",
+                  "type",
+                  "updatedAt",
+                  "url"
+                ],
+                "type": "object"
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "super-delete-index",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": { "ok": { "type": "boolean" } },
+                  "required": ["ok"],
+                  "type": "object"
+                },
+                "examples": { "Example 1": { "value": { "ok": true } } }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid authentication",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/PublicApiAuthError" }
+              }
+            }
+          },
+          "402": {
+            "description": "This feature is disabled for your organization. Please contact support.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicApiDisabledError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Data source not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicApiNotFoundError"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Input validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicApiFieldValidationError"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limitation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicApiRateLimitError"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/PublicApiError" }
+              }
+            }
+          }
+        },
+        "description": "Delete a custom content from Super usage.",
+        "summary": "Delete custom content",
+        "security": [{ "api_key": [], "bearer": [] }],
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "rootId": {
+                    "type": "string",
+                    "description": "Root id of the object to gather sources from. This should be created from the UI as a new custom data source.",
+                    "example": ["a2ZSuHnZf"]
+                  },
+                  "id": {
+                    "type": "string",
+                    "description": "Unique id of the object to index scoped to the rootId",
+                    "example": ["custom-id"]
+                  }
+                },
+                "required": ["rootId", "id"],
+                "type": "object"
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "super-list-index",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ListResult" },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "nbPages": 2,
+                      "page": 0,
+                      "hits": [
+                        {
+                          "title": "Onboarding",
+                          "url": "https://slite.slite.page/p/S1TSuHnZf/Security-at-Slite",
+                          "id": "S1TSuHnZf",
+                          "updatedAt": "2021-01-01T00:00:00.000Z"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid authentication",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/PublicApiAuthError" }
+              }
+            }
+          },
+          "402": {
+            "description": "This feature is disabled for your organization. Please contact support.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicApiDisabledError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Data source not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicApiNotFoundError"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Input validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicApiFieldValidationError"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limitation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicApiRateLimitError"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/PublicApiError" }
+              }
+            }
+          }
+        },
+        "description": "List custom content ids from Super usage.",
+        "summary": "List custom content",
+        "security": [{ "api_key": [], "bearer": [] }],
+        "parameters": [
+          {
+            "description": "Root id of the object to gather sources from. This should be created from the UI as a new custom data source.",
+            "in": "query",
+            "name": "rootId",
+            "required": true,
+            "schema": { "type": "string" },
+            "example": "a2ZSuHnZf"
+          },
+          {
+            "description": "Used to perform pagination on search",
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": { "$ref": "#/components/schemas/ListPage" }
+          },
+          {
+            "description": "Specify how many notes to return per page",
+            "in": "query",
+            "name": "hitsPerPage",
+            "required": false,
+            "schema": { "$ref": "#/components/schemas/ListHitsPerPage" }
+          }
+        ]
+      }
+    }
+  },
+  "servers": [{ "url": "https://api.super.work/v1" }]
+}

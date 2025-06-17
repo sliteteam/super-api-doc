@@ -32,12 +32,15 @@
     }
   },
   "appearance": { "default": "dark" },
+  "openapi": "./super-openapi.json",
   "navigation": {
-    "tabs": [
-      {
-        "tab": "API Reference",
-        "openapi": "https://api.super.work/super-openapi.json"
-      }
+    "pages": [
+      "quickstart",
+      "api-reference/ask-a-question",
+      "api-reference/trigger-super-digest",
+      "api-reference/list-custom-content",
+      "api-reference/index-a-custom-content",
+      "api-reference/delete-custom-content"
     ],
     "global": {
       "anchors": [
@@ -54,7 +57,6 @@
       ]
     }
   },
-
   "navbar": {
     "links": [
       {
